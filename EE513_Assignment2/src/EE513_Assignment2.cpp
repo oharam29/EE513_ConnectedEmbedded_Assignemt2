@@ -7,9 +7,16 @@
 //============================================================================
 
 #include <iostream>
+#include "ADXL345.h"
+#include <unistd.h>
+#include <pthread.h>
+
 using namespace std;
 
 int main() {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
-	return 0;
+   ADXL345 sensor(1,0x53);
+   sensor.setResolution(ADXL345::NORMAL);
+   sensor.setRange(ADXL345::PLUSMINUS_4_G);
+   sensor.displayPitchAndRoll();
+   return 0;
 }
