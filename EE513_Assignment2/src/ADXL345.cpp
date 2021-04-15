@@ -1,10 +1,3 @@
-/*
- * ADXL345.cpp
- *
- *  Created on: 13 Apr 2021
- *      Author: Nova6
- */
-
 #include "ADXL345.h"
 #include <iostream>
 #include <unistd.h>
@@ -12,9 +5,6 @@
 #include <stdio.h>
 
 using namespace std;
-
-
-
 //From Table 19. of the ADXL345 Data sheet
 #define DEVID          0x00   //Device ID
 #define THRESH_TAP     0x1D   //Tap Threshold
@@ -46,6 +36,66 @@ using namespace std;
 #define DATAZ1         0x37   //Z-axis Data 1
 #define FIFO_CTL       0x38   //FIFO control
 #define FIFO_STATUS    0x39   //FIFO status
+
+//coversion from binary to decimal and vice versa
+int bcdToDec(char b) { return (b/16)*10 + (b%16); }
+
+int DecTObcd(char b){ return ((b / 10) * 16) + (b % 10); }
+
+unsigned char ADXL345::readReg(unsigned char regAddr){
+	this->write(regAddr);
+	unsigned char buffer[1];
+	if(::read(this->file, buffer, 1)!=1){
+		perror("Failed to read any value.\n");
+		return 1;
+	}
+	return buffer[0];
+}
+
+int ADXL345::write(unsigned char value){
+	unsigned char buffer[1];
+	buffer[0] = value;
+	if(::write(this->file, buffer, 1)!=1){
+		perror("Failed to write to device");
+		return 1;
+	}
+	return 0;
+}
+
+int ADXL345::writeReg(unsigned char regAddr, unsigned char value){
+	unsigned char buffer[2];
+	buffer[0] = regAddr;
+	buffer[1] = value;
+
+	if(::write(this->file, buffer, 2)!=2){
+		perror("Failed to write to device");
+		return 1;
+	}
+	return 0;
+}
+
+int ADXL345::readAllADXL345Data(){
+	unsigned int readAddr[1];
+	int& x;
+	int& y;
+	int& z;
+
+	readAddr[0] = DATAX0;
+	int x0 = readReg(readAddr[0]);
+    if (x0 < 0) {
+        perror("Failed to read X data0 from Accelerometer\n");
+    }
+    readAddr[0] = DATAX1;
+    int x1 = readReg(readAddr[1]);
+    if (x1 < 0) {
+        perror("Failed to read X data1 from Accelerometer\n");
+    }
+    x = bcdToDec((x1<<8)|(x0));
+    y=0;
+    z=0;
+
+    return x,y,z;
+}
 
 /**
  * Method to combine two 8-bit registers into a single short, which is 16-bits on the Raspberry Pi. It shifts

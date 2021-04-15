@@ -12,6 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "MQTTClient.h"
+#include "ADXL345.h"
 #define  CPU_TEMP "/sys/class/thermal/thermal_zone0/temp"
 using namespace std;
 
@@ -73,6 +74,11 @@ int main(int argc, char* argv[]) {
    char piTime[10];
    getTimeonPi(piTime);
    sprintf(str_payload, piTime);
+   sprintf(str_payload, readAllADXL345Data());
+
+
+
+
    pubmsg.payload = str_payload;
    pubmsg.payloadlen = strlen(str_payload);
    pubmsg.qos = QOS;

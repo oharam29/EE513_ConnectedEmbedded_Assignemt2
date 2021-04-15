@@ -64,6 +64,14 @@ public:
 	// Debugging method to display and update the pitch/roll on the one line
 	virtual void displayPitchAndRoll(int iterations = 600);
 	virtual ~ADXL345();
+
+	//My added funtions
+	//READ AND WRITE
+	int ADXL345::writeReg(unsigned char regAddr, unsigned char value);
+	unsigned char ADXL345::readReg(unsigned char regAddr);
+	int ADXL345::write(unsigned char value);
+
+	int ADXL345::readAllADXL345Data();
 };
 
 
