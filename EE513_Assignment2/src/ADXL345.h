@@ -5,7 +5,7 @@
  *      Author: Nova6
  */
 
-ifndef ADXL345_H_
+#ifndef ADXL345_H_
 #define ADXL345_H_
 #include"I2CDevice.h"
 
