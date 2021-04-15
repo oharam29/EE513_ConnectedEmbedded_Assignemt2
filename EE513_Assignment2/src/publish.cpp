@@ -4,7 +4,7 @@
  *  Created on: 15 Apr 2021
  *      Author: Nova6
  */
-
+#include "ADXL345.h"
 // Based on the Paho C code example from www.eclipse.org/paho/
 #include <iostream>
 #include <sstream>
@@ -12,7 +12,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "MQTTClient.h"
-#include "ADXL345.h"
+
 #define  CPU_TEMP "/sys/class/thermal/thermal_zone0/temp"
 using namespace std;
 
