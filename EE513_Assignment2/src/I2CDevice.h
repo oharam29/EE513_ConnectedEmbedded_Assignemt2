@@ -11,8 +11,6 @@
 #define I2C_0 "/dev/i2c-0"
 #define I2C_1 "/dev/i2c-1"
 
-using namespace std;
-
 /**
  * @class I2CDevice
  * @brief Generic I2C Device class that can be used to connect to any type of I2C device and read or write to its registers
