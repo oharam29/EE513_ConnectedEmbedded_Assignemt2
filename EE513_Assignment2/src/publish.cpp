@@ -10,6 +10,7 @@
 #include <sstream>
 #include <fstream>
 #include <string.h>
+#include <unistd.h>
 #include "MQTTClient.h"
 #define  CPU_TEMP "/sys/class/thermal/thermal_zone0/temp"
 using namespace std;
@@ -32,10 +33,19 @@ float getCPUTemperature() {        // get the CPU temperature
    return (((float)cpuTemp)/1000);
 }
 
+void getTimeonPi(char* curTime){
+	time_t timeonPi = time(NULL);
+	struct tm tm = *localtime(&timeonPi);
+	sprintf(curTime, "%02d:%02d:%02d", tm.tm_hour, tm.tm_min, tm.tm_sec);
+	
+}
+
+
 int main(int argc, char* argv[]) {
-   char str_payload[100];          // Set your max message size here
+   char str_payload[500];          // Set your max message size here
    MQTTClient client;
    MQTTClient_connectOptions opts = MQTTClient_connectOptions_initializer;
+   MQTTClient_willOptions Willopts = MQTTClient_willOptions_initializer;
    MQTTClient_message pubmsg = MQTTClient_message_initializer;
    MQTTClient_deliveryToken token;
    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
@@ -43,12 +53,19 @@ int main(int argc, char* argv[]) {
    opts.cleansession = 1;
    opts.username = AUTHMETHOD;
    opts.password = AUTHTOKEN;
+   
+   
+   
+   
    int rc;
    if ((rc = MQTTClient_connect(client, &opts)) != MQTTCLIENT_SUCCESS) {
       cout << "Failed to connect, return code " << rc << endl;
       return -1;
    }
    sprintf(str_payload, "{\"d\":{\"CPUTemp\": %f }}", getCPUTemperature());
+   char piTime[10];
+   getTimeonPi(piTime);
+   sprintf(str_payload, piTime);
    pubmsg.payload = str_payload;
    pubmsg.payloadlen = strlen(str_payload);
    pubmsg.qos = QOS;

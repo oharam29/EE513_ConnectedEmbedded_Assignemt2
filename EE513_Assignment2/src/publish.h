@@ -14,6 +14,7 @@ public:
 	virtual ~publish();
 	publish(const publish &other);
 	float getCPUTemperature();
+	void getTimeonPi(char* curTime);
 };
 
 #endif /* PUBLISH_H_ */
