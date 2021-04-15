@@ -74,7 +74,9 @@ int main(int argc, char* argv[]) {
    char piTime[10];
    getTimeonPi(piTime);
    sprintf(str_payload, piTime);
-   sprintf(str_payload, readAllADXL345Data());
+   int x1, y1,z1 = 0;
+   readAllADXL345Data(x1,y1,z1);
+   sprintf(str_payload, \"X\": %d,\n", x1);
 
 
 

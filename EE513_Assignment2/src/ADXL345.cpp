@@ -42,51 +42,18 @@ int bcdToDec(char b) { return (b/16)*10 + (b%16); }
 
 int DecTObcd(char b){ return ((b / 10) * 16) + (b % 10); }
 
-unsigned char ADXL345::readReg(unsigned char regAddr){
-	this->write(regAddr);
-	unsigned char buffer[1];
-	if(::read(this->file, buffer, 1)!=1){
-		perror("Failed to read any value.\n");
-		return 1;
-	}
-	return buffer[0];
-}
 
-int ADXL345::write(unsigned char value){
-	unsigned char buffer[1];
-	buffer[0] = value;
-	if(::write(this->file, buffer, 1)!=1){
-		perror("Failed to write to device");
-		return 1;
-	}
-	return 0;
-}
-
-int ADXL345::writeReg(unsigned char regAddr, unsigned char value){
-	unsigned char buffer[2];
-	buffer[0] = regAddr;
-	buffer[1] = value;
-
-	if(::write(this->file, buffer, 2)!=2){
-		perror("Failed to write to device");
-		return 1;
-	}
-	return 0;
-}
-
-int ADXL345::readAllADXL345Data(){
+int ADXL345::readAllADXL345Data(int& x,int& y ,int& z){
 	unsigned int readAddr[1];
-	int& x = 0;
-	int& y = 0;
-	int& z = 0;
+
 
 	readAddr[0] = DATAX0;
-	int x0 = readReg(readAddr[0]);
+	int x0 = readRegister(readAddr[0]);
     if (x0 < 0) {
         perror("Failed to read X data0 from Accelerometer\n");
     }
     readAddr[0] = DATAX1;
-    int x1 = readReg(readAddr[1]);
+    int x1 = readRegister(readAddr[1]);
     if (x1 < 0) {
         perror("Failed to read X data1 from Accelerometer\n");
     }

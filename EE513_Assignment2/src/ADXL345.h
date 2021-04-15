@@ -66,12 +66,9 @@ public:
 	virtual ~ADXL345();
 
 	//My added funtions
-	//READ AND WRITE
-	int writeReg(unsigned char regAddr, unsigned char value);
-	unsigned char readReg(unsigned char regAddr);
-	int write(unsigned char value);
 
-	int readAllADXL345Data();
+
+	int readAllADXL345Data(int& x,int& y ,int& z);
 };
 
 
