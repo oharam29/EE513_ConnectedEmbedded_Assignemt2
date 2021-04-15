@@ -17,7 +17,7 @@ using namespace std;
 
 //Please replace the following address with the address of your server
 #define ADDRESS    "tcp://192.168.1.15:1883"
-#define CLIENTID   "rpi1"
+#define CLIENTID   "rpi_publisher"
 #define AUTHMETHOD "mike"
 #define AUTHTOKEN  "password"
 #define TOPIC      "ee513/test"
@@ -53,6 +53,13 @@ int main(int argc, char* argv[]) {
    opts.cleansession = 1;
    opts.username = AUTHMETHOD;
    opts.password = AUTHTOKEN;
+   
+   //setting last will and test message
+   opts.will = &Willopts;
+   opts.will->message = "Raspberry Pi connection has been unexpectedly ended";
+   opts.will->qos = 1;
+   opts.will->retained = 0;
+   opts.will->topicName = TOPIC;
    
    
    
