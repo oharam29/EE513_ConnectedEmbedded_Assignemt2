@@ -67,11 +67,11 @@ public:
 
 	//My added funtions
 	//READ AND WRITE
-	int ADXL345::writeReg(unsigned char regAddr, unsigned char value);
-	unsigned char ADXL345::readReg(unsigned char regAddr);
-	int ADXL345::write(unsigned char value);
+	int writeReg(unsigned char regAddr, unsigned char value);
+	unsigned char readReg(unsigned char regAddr);
+	int write(unsigned char value);
 
-	int ADXL345::readAllADXL345Data();
+	int readAllADXL345Data();
 };
 
 

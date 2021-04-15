@@ -76,9 +76,9 @@ int ADXL345::writeReg(unsigned char regAddr, unsigned char value){
 
 int ADXL345::readAllADXL345Data(){
 	unsigned int readAddr[1];
-	int& x;
-	int& y;
-	int& z;
+	int& x = 0;
+	int& y = 0;
+	int& z = 0;
 
 	readAddr[0] = DATAX0;
 	int x0 = readReg(readAddr[0]);
