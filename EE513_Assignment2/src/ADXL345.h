@@ -68,7 +68,7 @@ public:
 	//My added funtions
 
 
-	int readAllADXL345Data(int& x,int& y ,int& z);
+	virtual int readAllADXL345Data(int& x,int& y ,int& z);
 };
 
 
