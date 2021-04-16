@@ -63,23 +63,25 @@ int main(int argc, char* argv[]) {
    opts.will->topicName = TOPIC;
    
    
-   
-   
    int rc;
    if ((rc = MQTTClient_connect(client, &opts)) != MQTTCLIENT_SUCCESS) {
       cout << "Failed to connect, return code " << rc << endl;
       return -1;
    }
+
+   //add temp to payload
    sprintf(str_payload, "{\"d\":{\"CPUTemp\": %f }}", getCPUTemperature());
+
+   //get time
    char piTime[10];
    getTimeonPi(piTime);
    sprintf(str_payload, piTime);
+
+   //init ADXL345 and get data from it
    ADXL345 sensor(1, 0x53);
    int x1, y1,z1 = 0;
    sensor.readAllADXL345Data(x1,y1,z1);
    sprintf(str_payload, "\"X\": %d,\n", x1);
-
-
 
 
    pubmsg.payload = str_payload;
