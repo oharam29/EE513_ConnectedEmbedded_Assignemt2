@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
    
    	   //build payload
    	   sprintf(str_payload, "\n{\n");
-   	   sprintf(str_payload + strlen(str_payload), "\"d\":{\"CPUTemp\": %f,\n", CPUt);
+   	   sprintf(str_payload + strlen(str_payload), "\"CPUTemp\": %f,\n", CPUt);
    	   sprintf(str_payload + strlen(str_payload),"\"Time(at publish\": \"%s\", \n", piTime);
    	   sprintf(str_payload + strlen(str_payload), "\"ADXL345 Data\": {\n");
    	   sprintf(str_payload + strlen(str_payload), "\"X\": %d,\n", x1);
