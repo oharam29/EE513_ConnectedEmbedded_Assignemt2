@@ -34,8 +34,8 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	struct json_object *piTime;
 
 	parsed_json = json_tokener_parse((char*)message->payload);
-	json_object_object_get_ex(parsed_json, "CPU Temp at publish:", &CPUt);
-	json_object_object_get_ex(parsed_json, "Time at publish:", &piTime);
+	json_object_object_get_ex(parsed_json, "CPUTemp", &CPUt);
+	json_object_object_get_ex(parsed_json, "Time(at publish)", &piTime);
     printf("CPU Temp: %d degrees    (Topic Publihsed to: %s)\n", json_object_get_int(CPUt), topicName);
     printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(piTime), topicName);
 
