@@ -17,7 +17,7 @@
 using namespace std;
 
 //Please replace the following address with the address of your server
-#define ADDRESS    "tcp://192.168.1.15:1883"
+#define ADDRESS    "tcp://192.168.1.31:1883"
 #define CLIENTID   "rpi_publisher"
 #define AUTHMETHOD "mike"
 #define AUTHTOKEN  "password"

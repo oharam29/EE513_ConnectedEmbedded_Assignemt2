@@ -11,11 +11,11 @@
 #include "MQTTClient.h"
 #include<json-c/json.h>
 
-#define ADDRESS     "tcp://192.168.1.15:1883"
+#define ADDRESS     "tcp://192.168.1.31:1883"
 #define CLIENTID    "Subscriber1"
 #define AUTHMETHOD  "mike"
 #define AUTHTOKEN   "password"
-#define TOPIC       "ee513/CPUTemp"
+#define TOPIC       "ee513/test"
 #define PAYLOAD     "Hello World!"
 #define QOS         1
 #define TIMEOUT     10000L
@@ -30,11 +30,14 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
 
 	struct json_object *parsed;
+	struct json_object *temp;
 	struct json_object *time;
 
 	parsed = json_tokener_parse((char*)message->payload);
-	json_object_object_get_ex(parsed_json, "CurrentTime", &time);
-    printf("Current Time: %s    (topic: %s)\n", json_object_get_string(time), topicName);
+	json_object_object_get_ex(parsed, "CPU Temp at publish:", &temp);
+	json_object_object_get_ex(parsed, "Time at publish:", &time);
+    printf("CPU Temp: %d degrees    (Topic Publihsed to: %s)\n", json_object_get_int(temp), topicName);
+    printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(time), topicName);
 
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
