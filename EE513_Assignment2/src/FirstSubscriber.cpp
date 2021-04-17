@@ -29,13 +29,13 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
 
-	struct json_object *parsed;
+	struct json_object *parsed_json;
 	struct json_object *temp;
 	struct json_object *time;
 
-	parsed = json_tokener_parse((char*)message->payload);
-	json_object_object_get_ex(parsed, "CPU Temp at publish:", &temp);
-	json_object_object_get_ex(parsed, "Time at publish:", &time);
+	parsed_json = json_tokener_parse((char*)message->payload);
+	json_object_object_get_ex(parsed_json, "CPU Temp at publish:", &temp);
+	json_object_object_get_ex(parsed_json, "Time at publish:", &time);
     printf("CPU Temp: %d degrees    (Topic Publihsed to: %s)\n", json_object_get_int(temp), topicName);
     printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(time), topicName);
 
