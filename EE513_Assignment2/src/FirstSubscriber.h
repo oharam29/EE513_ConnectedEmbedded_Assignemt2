@@ -1,4 +1,11 @@
 /*
+ * FirstSubscriber.h
+ *
+ *  Created on: 17 Apr 2021
+ *      Author: Nova6
+ */
+
+/*
  * subscribertemplate.cpp
  *
  *  Created on: 15 Apr 2021
@@ -11,8 +18,8 @@
 #include "MQTTClient.h"
 
 #define ADDRESS     "tcp://192.168.1.15:1883"
-#define CLIENTID    "rpi2"
-#define AUTHMETHOD  "molloyd"
+#define CLIENTID    "Subscriber1"
+#define AUTHMETHOD  "mike"
 #define AUTHTOKEN   "password"
 #define TOPIC       "ee513/CPUTemp"
 #define PAYLOAD     "Hello World!"
