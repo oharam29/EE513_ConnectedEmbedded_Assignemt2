@@ -10,10 +10,6 @@
 
 class FirstSubsciber {
 public:
-	subscriber_template();
-	virtual ~subscriber_template();
-	subscriber_template(const subscriber_template &other);
-
 	void connlost(void *context, char *cause);
 	int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message);
 	void delivered(void *context, MQTTClient_deliveryToken dt);

@@ -8,8 +8,10 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include <iostream>
 #include "MQTTClient.h"
 #include<json-c/json.h>
+using namespace std;
 
 #define ADDRESS     "tcp://192.168.1.31:1883"
 #define CLIENTID    "Subscriber1"
@@ -36,6 +38,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	parsed_json = json_tokener_parse((char*)message->payload);
 	json_object_object_get_ex(parsed_json, "CPUTemp", &CPUt);
 	json_object_object_get_ex(parsed_json, "Time(at publish)", &piTime);
+	cout << "Outputting message:" << endl;
     printf("CPU Temp: %d degrees    (Topic Publihsed to: %s)\n", json_object_get_int(CPUt), topicName);
     printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(piTime), topicName);
 
