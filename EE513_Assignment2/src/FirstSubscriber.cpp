@@ -42,8 +42,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	struct json_object *parsedY;
 	struct json_object *parsedZ;
 
-
-
 	parsed_json = json_tokener_parse((char*)message->payload);
 	json_object_object_get_ex(parsed_json, "CPUTemp", &CPUt);
 	json_object_object_get_ex(parsed_json, "Time(at publish)", &piTime);
