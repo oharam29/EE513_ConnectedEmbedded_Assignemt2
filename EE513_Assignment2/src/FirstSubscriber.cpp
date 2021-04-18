@@ -10,7 +10,11 @@
 #include "string.h"
 #include <iostream>
 #include "MQTTClient.h"
+
+
 #include<json-c/json.h>
+
+
 using namespace std;
 
 #define ADDRESS     "tcp://192.168.1.31:1883"
@@ -34,13 +38,26 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	struct json_object *parsed_json;
 	struct json_object *CPUt;
 	struct json_object *piTime;
+	struct json_object *parsedX;
+	struct json_object *parsedY;
+	struct json_object *parsedZ;
+
+
 
 	parsed_json = json_tokener_parse((char*)message->payload);
 	json_object_object_get_ex(parsed_json, "CPUTemp", &CPUt);
 	json_object_object_get_ex(parsed_json, "Time(at publish)", &piTime);
+	json_object_object_get_ex(parsed_json, "X", &parsedX);
+	json_object_object_get_ex(parsed_json, "Y", &parsedY);
+	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
+
 	cout << "Outputting message:" << endl;
     printf("CPU Temp: %d degrees    (Topic Publihsed to: %s)\n", json_object_get_int(CPUt), topicName);
     printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(piTime), topicName);
+    printf("X Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedX), topicName);
+    printf("Y Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedY), topicName);
+    printf("Z Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedZ), topicName);
+
 
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
