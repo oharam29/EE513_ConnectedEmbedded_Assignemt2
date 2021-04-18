@@ -50,7 +50,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
 
 	cout << "Outputting message:" << endl;
-    printf("CPU Temp: %d degrees    (Topic Publihsed to: %s)\n", json_object_get_int(CPUt), topicName);
+    printf("CPU Temp: %d degrees\n", json_object_get_int(CPUt));
     printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(piTime), topicName);
     printf("X Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedX), topicName);
     printf("Y Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedY), topicName);
