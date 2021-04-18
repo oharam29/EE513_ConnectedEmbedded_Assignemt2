@@ -50,11 +50,12 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
 
 	cout << "Outputting message:" << endl;
+	printf("The topic these messages were published to is: ", topicName);
     printf("CPU Temp: %d degrees\n", json_object_get_int(CPUt));
-    printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(piTime), topicName);
-    printf("X Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedX), topicName);
-    printf("Y Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedY), topicName);
-    printf("Z Co-ord: %d    (Topic Publihsed to: %s)\n", json_object_get_int(parsedZ), topicName);
+    printf("Current Time: %s\n", json_object_get_string(piTime));
+    printf("X Co-ord: %d\n", json_object_get_int(parsedX));
+    printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
+    printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
 
 
     MQTTClient_freeMessage(&message);
