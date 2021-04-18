@@ -68,6 +68,7 @@ int main(int argc, char* argv[]) {
       cout << "Failed to connect, return code " << rc << endl;
       return -1;
    }
+
    for (int qos=0; qos<3; qos++){
 
 
@@ -107,8 +108,9 @@ int main(int argc, char* argv[]) {
    	   rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
    	   cout << "Message with token " << (int)token << " delivered." << endl;
    }
+   
 
-   MQTTClient_disconnect(client, 10000);
+   MQTTClient_disconnect(client, 30000);
    MQTTClient_destroy(&client);
    return rc;
 }
