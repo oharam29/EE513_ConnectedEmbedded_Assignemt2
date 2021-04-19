@@ -25,11 +25,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 private slots:
-    void on_downButton_clicked();
-    void on_upButton_clicked();
     void on_connectButton_clicked();
     void on_disconnectButton_clicked();
     void on_MQTTmessage(QString message);
+    void getPitch(int X=0,int Y=0,int Z=0);
 
 signals:
     void messageSignal(QString message);

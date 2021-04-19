@@ -3,6 +3,8 @@
 #include<QDebug>
 
 #include<json-c/json.h>
+int pitch = 0;
+
 
 MainWindow *handle;
 
@@ -37,21 +39,11 @@ void MainWindow::update(){
     double key = time.elapsed()/1000.0; // time elapsed since start of demo, in seconds
     ui->customPlot->graph(0)->addData(key,count);
     ui->customPlot->graph(0)->rescaleKeyAxis(true);
+    this->ui->customPlot->graph(0)->addData(key, pitch);
+
     ui->customPlot->replot();
     QString text = QString("Value added is %1").arg(this->count);
     //ui->outputEdit->setText(text);
-}
-
-void MainWindow::on_downButton_clicked()
-{
-    this->count-=10;
-    this->update();
-}
-
-void MainWindow::on_upButton_clicked()
-{
-    this->count+=10;
-    this->update();
 }
 
 void MainWindow::on_connectButton_clicked()
@@ -122,12 +114,18 @@ void MainWindow::on_MQTTmessage(QString payload){
     json_object_object_get_ex(parsed_json, "Y", &parsedY);
     json_object_object_get_ex(parsed_json, "Z", &parsedZ);
 
+    signed int X = json_object_get_int(parsedX);
+    signed int Y = json_object_get_int(parsedY);
+    signed int Z = json_object_get_int(parsedZ);
+
     ui->ConOutput->appendPlainText(QString("Time at publish: ") + json_object_get_string(piTime));
     ui->ConOutput->appendPlainText(QString("CPU Temperature: ") + json_object_get_string(CPUt) + QString(" degrees"));
     ui->ConOutput->appendPlainText(QString("X Co-ordinate: ") + json_object_get_string(parsedX));
     ui->ConOutput->appendPlainText(QString("Y Co-ordinate: ") + json_object_get_string(parsedY));
     ui->ConOutput->appendPlainText(QString("Z Co-ordinate: ") + json_object_get_string(parsedZ));
 
+    this->getPitch(X,Y,Z);
+    this->update();
 
 }
 
@@ -142,4 +140,18 @@ void MainWindow::on_disconnectButton_clicked()
     qDebug() << "Disconnecting from the broker" << endl;
     MQTTClient_disconnect(client, 10000);
     //MQTTClient_destroy(&client);
+}
+
+void MainWindow::getPitch(int X,int Y,int Z){
+    float gravity_range=4.0f;
+    float resolution = 1024.0f;
+    float factor = gravity_range/resolution*1000;
+
+    signed int accelerationX = (signed int)(X * factor);
+    signed int accelerationY = (signed int)(Y * factor);
+    signed int accelerationZ = (signed int)(Z * factor);
+
+    signed int pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY
+                                                      + accelerationZ*accelerationZ))/M_PI;
+
 }
