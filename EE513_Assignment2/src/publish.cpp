@@ -83,11 +83,9 @@ int main(int argc, char* argv[]) {
    	   sprintf(str_payload, "\n{\n");
    	   sprintf(str_payload + strlen(str_payload), "\"CPUTemp\": %f,\n", CPUt);
    	   sprintf(str_payload + strlen(str_payload),"\"Time(at publish)\": \"%s\", \n", piTime);
-   	   sprintf(str_payload + strlen(str_payload), "\"ADXL345 Data\": {\n");
    	   sprintf(str_payload + strlen(str_payload), "\"X\": %d,\n", x1);
    	   sprintf(str_payload + strlen(str_payload), "\"Y\": %d,\n", y1);
    	   sprintf(str_payload + strlen(str_payload), "\"Z\": %d,\n", z1);
-   	   sprintf(str_payload + strlen(str_payload), "   }\n");
    	   sprintf(str_payload + strlen(str_payload), "}");
 
    	   pubmsg.payload = str_payload;
