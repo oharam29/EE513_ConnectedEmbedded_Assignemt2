@@ -48,7 +48,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
 	float gravity_range=4.0f;
     float resolution = 1024.0f;
-    float factor = gravity_range/resolution;
+    float factor = gravity_range/resolution*1000;
 
 	struct json_object *parsed_json;
 	struct json_object *parsedX;
@@ -62,7 +62,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	signed int X = json_object_get_int(parsedX);
 	signed int Y = json_object_get_int(parsedY);
 	signed int Z = json_object_get_int(parsedZ);
-	cout << factor << endl;
+
 	signed int accelerationX = (signed int)(X * factor);
 	signed int accelerationY = (signed int)(Y * factor);
 	signed int accelerationZ = (signed int)(Z * factor);
