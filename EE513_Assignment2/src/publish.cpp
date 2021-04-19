@@ -108,6 +108,8 @@ int main(int argc, char* argv[]) {
 			   " \non topic " << TOPIC << " for ClientID: " << CLIENTID << endl;
    	   rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
    	   cout << "Message with token " << (int)token << " delivered." << endl;
+   	   cout << "QoS: " << (int)qos << "." << endl;
+       usleep(1000000);
    }
    
    
