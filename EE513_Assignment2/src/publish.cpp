@@ -75,9 +75,9 @@ int main(int argc, char* argv[]) {
    	   getTimeonPi(piTime);
 
    	   //init ADXL345 and get data from it
-   	   ADXL345 sensor(1, 0x53);
+   	   ADXL345 accel(1, 0x53);
    	   int x1, y1,z1 = 0;
-   	   sensor.readAllADXL345Data(x1,y1,z1);
+   	   accel.readAllADXL345Data(x1,y1,z1);
    
    	   //build payload
    	   sprintf(str_payload, "\n{\n");
