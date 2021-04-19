@@ -73,8 +73,10 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     printf("Pitch is: %d\n", pitch);
     printf("Roll is: %d\n", roll);
 
+	if(pitch > 40){
+	    blink_led(blue, 1000);
+	}
 
-    blink_led(blue, 1000);
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;
