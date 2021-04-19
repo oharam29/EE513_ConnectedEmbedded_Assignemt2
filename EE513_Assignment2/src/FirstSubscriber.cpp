@@ -10,6 +10,7 @@
 #include "string.h"
 #include <iostream>
 #include "MQTTClient.h"
+#include <wiringPi.h>
 
 
 #include<json-c/json.h>
@@ -33,7 +34,17 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
     deliveredtoken = dt;
 }
 
+void blink_led(int led, int time) {
+    digitalWrite(led, HIGH);
+    delay(time);
+    digitalWrite(led, LOW);
+    delay(time);
+}
+
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
+	wiringPiSetupGpio();
+	green = 6;
+	pinMode(green, OUTPUT);
 
 	struct json_object *parsed_json;
 	struct json_object *CPUt;
@@ -57,7 +68,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
     printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
 
-
+    blink_led(green, time);
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;
