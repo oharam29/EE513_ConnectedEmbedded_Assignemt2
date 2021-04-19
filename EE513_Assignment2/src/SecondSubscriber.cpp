@@ -60,6 +60,8 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	signed int accelerationY = (signed int)(((signed int)rawY) * 3.9);
 	signed int accelerationZ = (signed int)(((signed int)rawZ) * 3.9);
 
+	pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY + accelerationZ*accelerationZ))/M_PI;
+
 	json_object_object_get_ex(parsed_json, "X", &parsedX);
 	json_object_object_get_ex(parsed_json, "Y", &parsedY);
 	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
@@ -67,6 +69,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     printf("X Co-ord: %d\n", json_object_get_int(parsedX));
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
     printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
+    printf("Pitch is: %d\n", pitch);
 
     blink_led(blue, 1000);
     MQTTClient_freeMessage(&message);
