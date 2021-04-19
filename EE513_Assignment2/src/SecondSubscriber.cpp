@@ -67,18 +67,22 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	signed int roll = 180 * atan (accelerationY/sqrt(accelerationX*accelerationX + accelerationZ*accelerationZ))/M_PI;
 
 
-	cout << "Outputting content of payload:" << endl;
+	cout << "\nOutputting content of payload:" << endl;
 	printf("The topic these messages were published to is: %s\n", topicName);
     printf("X Co-ord: %d\n", json_object_get_int(parsedX));
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
-    printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
-
-    cout << "Performing Pitch and Roll calculations:\n" << endl;
+    printf("Z Co-ord: %d", json_object_get_int(parsedZ));
+	cout << "\n" << endl;
+    cout << "Performing Pitch and Roll calculations:" << endl;
     printf("Pitch is: %d\n", pitch);
     printf("Roll is: %d\n", roll);
 
 	if(pitch > 40){
+	    cout << "Pitch value exceeds 40 - blinking LED!" << endl;
 	    blink_led(blue, 1000);
+	}
+	else{
+		cout << "Pitch value less than 40 - LED not blinking" << endl;
 	}
 
     MQTTClient_freeMessage(&message);
