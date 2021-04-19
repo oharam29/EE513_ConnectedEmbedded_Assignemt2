@@ -5,7 +5,7 @@
  *      Author: Nova6
  */
 
-#include "SecondSubscriber.h"
+
 
 #include "stdio.h"
 #include "stdlib.h"
@@ -14,10 +14,11 @@
 #include "MQTTClient.h"
 #include<json-c/json.h>
 #include <wiringPi.h>
+#include <math.h>
 
 using namespace std;
 
-#define ADDRESS     "tcp://192.168.1.31:1883"
+#define ADDRESS     "tcp://192.168.1.51:1883"
 #define CLIENTID    "Subscriber2"
 #define AUTHMETHOD  "mike"
 #define AUTHTOKEN   "password"
@@ -33,6 +34,13 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
     deliveredtoken = dt;
 }
 
+void blink_led(int led, int time) {
+    digitalWrite(led, HIGH);
+    delay(time);
+    digitalWrite(led, LOW);
+    delay(time);
+}
+
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
 	wiringPiSetupGpio();
 	int blue = 6;
@@ -42,11 +50,16 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	struct json_object *parsedX;
 	struct json_object *parsedY;
 	struct json_object *parsedZ;
-
-	int rawX = &parsedX;
-	accelerationX = (signed int)(((signed int)rawX) * 3.9);
-
 	parsed_json = json_tokener_parse((char*)message->payload);
+
+	signed int rawX = json_object_get_int(parsedX);
+	signed int rawY = json_object_get_int(parsedY);
+	signed int rawZ = json_object_get_int(parsedZ);
+	
+	signed int accelerationX = (signed int)(((signed int)rawX) * 3.9);
+	signed int accelerationY = (signed int)(((signed int)rawY) * 3.9);
+	signed int accelerationZ = (signed int)(((signed int)rawZ) * 3.9);
+
 	json_object_object_get_ex(parsed_json, "X", &parsedX);
 	json_object_object_get_ex(parsed_json, "Y", &parsedY);
 	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
