@@ -51,6 +51,9 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	struct json_object *parsedY;
 	struct json_object *parsedZ;
 	parsed_json = json_tokener_parse((char*)message->payload);
+	json_object_object_get_ex(parsed_json, "X", &parsedX);
+	json_object_object_get_ex(parsed_json, "Y", &parsedY);
+	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
 
 	signed int rawX = json_object_get_int(parsedX);
 	signed int rawY = json_object_get_int(parsedY);
@@ -60,11 +63,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	signed int accelerationY = (signed int)(((signed int)rawY) * 3.9);
 	signed int accelerationZ = (signed int)(((signed int)rawZ) * 3.9);
 
-	pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY + accelerationZ*accelerationZ))/M_PI;
-
-	json_object_object_get_ex(parsed_json, "X", &parsedX);
-	json_object_object_get_ex(parsed_json, "Y", &parsedY);
-	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
+	signed int pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY + accelerationZ*accelerationZ))/M_PI;
 
     printf("X Co-ord: %d\n", json_object_get_int(parsedX));
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));

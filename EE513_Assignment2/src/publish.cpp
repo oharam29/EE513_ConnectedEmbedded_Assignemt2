@@ -44,7 +44,7 @@ void getTimeonPi(char* curTime){
 
 
 int main(int argc, char* argv[]) {
-   char str_payload[500];          // Set your max message size here
+   char str_payload[1024];          // Set your max message size here
    MQTTClient client;
    MQTTClient_connectOptions opts = MQTTClient_connectOptions_initializer;
    MQTTClient_willOptions Willopts = MQTTClient_willOptions_initializer;
