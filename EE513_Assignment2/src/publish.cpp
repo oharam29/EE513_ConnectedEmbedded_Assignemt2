@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
 
    	   pubmsg.payload = str_payload;
    	   pubmsg.payloadlen = strlen(str_payload);
-   	   pubmsg.qos = QOS;
+   	   pubmsg.qos = qos;
    	   pubmsg.retained = 0;
    	   MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
    	   cout << "Waiting for up to " << (int)(TIMEOUT/1000) <<
