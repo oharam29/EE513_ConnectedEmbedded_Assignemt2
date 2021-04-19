@@ -13,6 +13,8 @@
 #include <iostream>
 #include "MQTTClient.h"
 #include<json-c/json.h>
+#include <wiringPi.h>
+
 using namespace std;
 
 #define ADDRESS     "tcp://192.168.1.31:1883"
@@ -32,18 +34,28 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
 }
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
+	wiringPiSetupGpio();
+	int blue = 6;
+	pinMode(blue, OUTPUT);
 
 	struct json_object *parsed_json;
-	struct json_object *CPUt;
-	struct json_object *piTime;
+	struct json_object *parsedX;
+	struct json_object *parsedY;
+	struct json_object *parsedZ;
+
+	int rawX = &parsedX;
+	accelerationX = (signed int)(((signed int)rawX) * 3.9);
 
 	parsed_json = json_tokener_parse((char*)message->payload);
-	json_object_object_get_ex(parsed_json, "CPUTemp", &CPUt);
-	json_object_object_get_ex(parsed_json, "Time(at publish)", &piTime);
-	cout << "Outputting message:" << endl;
-    printf("CPU Temp: %d degrees    (Topic Publihsed to: %s)\n", json_object_get_int(CPUt), topicName);
-    printf("Current Time: %s    (Topic Publihsed to: %s)\n", json_object_get_string(piTime), topicName);
+	json_object_object_get_ex(parsed_json, "X", &parsedX);
+	json_object_object_get_ex(parsed_json, "Y", &parsedY);
+	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
 
+    printf("X Co-ord: %d\n", json_object_get_int(parsedX));
+    printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
+    printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
+
+    blink_led(blue, 1000);
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;

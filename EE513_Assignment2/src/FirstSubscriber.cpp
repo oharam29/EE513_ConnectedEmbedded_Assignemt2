@@ -43,8 +43,8 @@ void blink_led(int led, int time) {
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
 	wiringPiSetupGpio();
-	int green = 6;
-	pinMode(green, OUTPUT);
+	int blue = 6;
+	pinMode(blue, OUTPUT);
 
 	struct json_object *parsed_json;
 	struct json_object *CPUt;
@@ -68,7 +68,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
     printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
 
-    blink_led(green, 1000);
+    blink_led(blue, 1000);
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;
