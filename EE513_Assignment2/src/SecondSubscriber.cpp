@@ -55,21 +55,25 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	json_object_object_get_ex(parsed_json, "Y", &parsedY);
 	json_object_object_get_ex(parsed_json, "Z", &parsedZ);
 
-	signed int rawX = json_object_get_int(parsedX);
-	signed int rawY = json_object_get_int(parsedY);
-	signed int rawZ = json_object_get_int(parsedZ);
+	signed int X = json_object_get_int(parsedX);
+	signed int Y = json_object_get_int(parsedY);
+	signed int Z = json_object_get_int(parsedZ);
 	
-	signed int accelerationX = (signed int)(rawX * 3.9);
-	signed int accelerationY = (signed int)(rawY * 3.9);
-	signed int accelerationZ = (signed int)(rawZ * 3.9);
+	signed int accelerationX = (signed int)(X * 3.9);
+	signed int accelerationY = (signed int)(Y * 3.9);
+	signed int accelerationZ = (signed int)(Z * 3.9);
 
 	signed int pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY + accelerationZ*accelerationZ))/M_PI;
 	signed int roll = 180 * atan (accelerationY/sqrt(accelerationX*accelerationX + accelerationZ*accelerationZ))/M_PI;
 
+
+	cout << "Outputting content of payload:" << endl;
+	printf("The topic these messages were published to is: %s\n", topicName);
     printf("X Co-ord: %d\n", json_object_get_int(parsedX));
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
     printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
 
+    cout << "Performing Pitch and Roll calculations:\n" << endl;
     printf("Pitch is: %d\n", pitch);
     printf("Roll is: %d\n", roll);
 
