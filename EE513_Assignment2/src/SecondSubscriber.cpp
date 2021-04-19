@@ -46,6 +46,10 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	int blue = 6;
 	pinMode(blue, OUTPUT);
 
+	float gravity_range=4.0f;
+    float resolution = 1024.0f;
+    float factor = gravity_range/resolution;
+
 	struct json_object *parsed_json;
 	struct json_object *parsedX;
 	struct json_object *parsedY;
@@ -59,9 +63,9 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	signed int Y = json_object_get_int(parsedY);
 	signed int Z = json_object_get_int(parsedZ);
 	
-	signed int accelerationX = (signed int)(X * 3.9);
-	signed int accelerationY = (signed int)(Y * 3.9);
-	signed int accelerationZ = (signed int)(Z * 3.9);
+	signed int accelerationX = (signed int)(X * factor);
+	signed int accelerationY = (signed int)(Y * factor);
+	signed int accelerationZ = (signed int)(Z * factor);
 
 	signed int pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY + accelerationZ*accelerationZ))/M_PI;
 	signed int roll = 180 * atan (accelerationY/sqrt(accelerationX*accelerationX + accelerationZ*accelerationZ))/M_PI;

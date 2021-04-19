@@ -38,10 +38,7 @@ void getTimeonPi(char* curTime){
 	time_t timeonPi = time(NULL);
 	struct tm tm = *localtime(&timeonPi);
 	sprintf(curTime, "%02d:%02d:%02d", tm.tm_hour, tm.tm_min, tm.tm_sec);
-	
 }
-
-
 
 int main(int argc, char* argv[]) {
    char str_payload[1024];          // Set your max message size here
@@ -63,7 +60,6 @@ int main(int argc, char* argv[]) {
    opts.will->retained = 0;
    opts.will->topicName = TOPIC;
    
-   
    int rc;
    if ((rc = MQTTClient_connect(client, &opts)) != MQTTCLIENT_SUCCESS) {
       cout << "Failed to connect, return code " << rc << endl;
@@ -71,15 +67,12 @@ int main(int argc, char* argv[]) {
    }
    
    for (int qos=0; qos<3; qos++){
-
-
    	   //get temp
    	   float CPUt = getCPUTemperature();
    
    	   //get time
    	   char piTime[10];
    	   getTimeonPi(piTime);
-
 
    	   //init ADXL345 and get data from it
    	   ADXL345 sensor(1, 0x53);
@@ -90,13 +83,12 @@ int main(int argc, char* argv[]) {
    	   sprintf(str_payload, "\n{\n");
    	   sprintf(str_payload + strlen(str_payload), "\"CPUTemp\": %f,\n", CPUt);
    	   sprintf(str_payload + strlen(str_payload),"\"Time(at publish)\": \"%s\", \n", piTime);
-   	   //sprintf(str_payload + strlen(str_payload), "\"ADXL345 Data\": {\n");
+   	   sprintf(str_payload + strlen(str_payload), "\"ADXL345 Data\": {\n");
    	   sprintf(str_payload + strlen(str_payload), "\"X\": %d,\n", x1);
    	   sprintf(str_payload + strlen(str_payload), "\"Y\": %d,\n", y1);
    	   sprintf(str_payload + strlen(str_payload), "\"Z\": %d,\n", z1);
-   	   //sprintf(str_payload + strlen(str_payload), "   }\n");
+   	   sprintf(str_payload + strlen(str_payload), "   }\n");
    	   sprintf(str_payload + strlen(str_payload), "}");
-
 
    	   pubmsg.payload = str_payload;
    	   pubmsg.payloadlen = strlen(str_payload);
@@ -106,14 +98,14 @@ int main(int argc, char* argv[]) {
    	   cout << "Waiting for up to " << (int)(TIMEOUT/1000) <<
    			   " seconds for publication of " << str_payload <<
 			   " \non topic " << TOPIC << " for ClientID: " << CLIENTID << endl;
+
    	   rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
+
    	   cout << "Message with token " << (int)token << " delivered." << endl;
    	   cout << "QoS: " << (int)qos << "." << endl;
-       usleep(1000000);
+       usleep(100000);
    }
    
-   
-
    MQTTClient_disconnect(client, 30000);
    MQTTClient_destroy(&client);
    return rc;
