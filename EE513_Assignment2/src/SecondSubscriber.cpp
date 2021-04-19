@@ -59,16 +59,20 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 	signed int rawY = json_object_get_int(parsedY);
 	signed int rawZ = json_object_get_int(parsedZ);
 	
-	signed int accelerationX = (signed int)(((signed int)rawX) * 3.9);
-	signed int accelerationY = (signed int)(((signed int)rawY) * 3.9);
-	signed int accelerationZ = (signed int)(((signed int)rawZ) * 3.9);
+	signed int accelerationX = (signed int)(rawX * 3.9);
+	signed int accelerationY = (signed int)(rawY * 3.9);
+	signed int accelerationZ = (signed int)(rawZ * 3.9);
 
 	signed int pitch = 180 * atan (accelerationX/sqrt(accelerationY*accelerationY + accelerationZ*accelerationZ))/M_PI;
+	signed int roll = 180 * atan (accelerationY/sqrt(accelerationX*accelerationX + accelerationZ*accelerationZ))/M_PI;
 
     printf("X Co-ord: %d\n", json_object_get_int(parsedX));
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
     printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
+
     printf("Pitch is: %d\n", pitch);
+    printf("Roll is: %d\n", roll);
+
 
     blink_led(blue, 1000);
     MQTTClient_freeMessage(&message);
