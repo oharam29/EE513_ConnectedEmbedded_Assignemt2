@@ -18,7 +18,7 @@
 
 using namespace std;
 
-#define ADDRESS     "tcp://192.168.1.31:1883"
+#define ADDRESS     "tcp://192.168.1.51:1883"
 #define CLIENTID    "Subscriber1"
 #define AUTHMETHOD  "mike"
 #define AUTHTOKEN   "password"
@@ -43,7 +43,7 @@ void blink_led(int led, int time) {
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
 	wiringPiSetupGpio();
-	green = 6;
+	int green = 6;
 	pinMode(green, OUTPUT);
 
 	struct json_object *parsed_json;
@@ -68,7 +68,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     printf("Y Co-ord: %d\n", json_object_get_int(parsedY));
     printf("Z Co-ord: %d\n", json_object_get_int(parsedZ));
 
-    blink_led(green, time);
+    blink_led(green, 1000);
     MQTTClient_freeMessage(&message);
     MQTTClient_free(topicName);
     return 1;
